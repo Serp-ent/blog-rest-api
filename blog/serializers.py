@@ -9,6 +9,11 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class BlogSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["author"] = AuthorSerializer(instance.author).data
+        return data
+
     class Meta:
         model = Blog
         fields = [
@@ -16,7 +21,6 @@ class BlogSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "created_at",
-            "author",
         ]
 
 
