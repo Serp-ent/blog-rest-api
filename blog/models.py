@@ -7,12 +7,18 @@ class Author(models.Model):
     email = models.EmailField()
     bio = models.TextField()
 
+    def __str__(self) -> str:
+        return f"{self.name} ({self.id})"
+
 
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     created_at = models.DateField(auto_now_add=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.id}. {self.title}"
 
 
 class Comment(models.Model):
