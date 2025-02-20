@@ -45,7 +45,6 @@ class BlogSerializer(serializers.HyperlinkedModelSerializer):
             "title",
             "content",
             "created_at",
-            "comments",
         ]
 
 
