@@ -19,7 +19,7 @@ class AuthorSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Author
-        fields = ["url", "name", "email", "bio"]
+        fields = ["url", "bio"]
 
 
 class BlogSerializer(serializers.HyperlinkedModelSerializer):
