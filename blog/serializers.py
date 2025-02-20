@@ -58,3 +58,9 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
             "created_at",
             "text",
         ]
+        read_only_fields = ["author", "created_at"]
+
+    def update(self, instance, validated_data):
+        # Prevent updating the blog field
+        validated_data.pop("blog", None)
+        return super().update(instance, validated_data)

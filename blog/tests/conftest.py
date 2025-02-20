@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
+from blog.models import Blog
 from rest_framework.test import APIClient
 
 
@@ -21,3 +22,9 @@ def auth_client(user):
     client.force_authenticate(user=user)
 
     return client
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def blog(user):
+    return Blog.objects.create(author=user.author, title="title", content="content")
