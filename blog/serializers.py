@@ -12,6 +12,9 @@ class BlogSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["author"] = AuthorSerializer(instance.author).data
+        
+        comments = Comment.objects.order_by('-created_at')[:5]
+        data['comments'] = CommentSerializer(comments, many=True).data
         return data
 
     class Meta:
@@ -21,6 +24,7 @@ class BlogSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "created_at",
+            "comments",
         ]
 
 
