@@ -6,7 +6,7 @@ from rest_framework import permissions
 
 
 # Create your views here.
-class AuthorViewset(viewsets.ModelViewSet):
+class AuthorViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
