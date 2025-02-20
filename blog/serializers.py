@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from blog.models import Author, Blog, Comment
+from django.contrib.auth.models import User
 
 
 class AuthorSerializer(serializers.HyperlinkedModelSerializer):
@@ -64,3 +65,19 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         # Prevent updating the blog field
         validated_data.pop("blog", None)
         return super().update(instance, validated_data)
+
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ("username", "password", "email")
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            password=validated_data["password"],
+            email=validated_data.get("email", ""),
+        )
+        return user
