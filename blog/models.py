@@ -18,7 +18,7 @@ class Blog(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.id}. {self.title}"
+        return f"{self.title} ({self.id})"
 
 
 class Comment(models.Model):
