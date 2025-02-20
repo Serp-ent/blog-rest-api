@@ -9,7 +9,7 @@ class Author(models.Model):
     bio = models.TextField()
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.id})"
+        return f"{self.user.username} ({self.id})"
 
 @receiver(post_save, sender=User)
 def create_author(sender, instance, created, **kwargs):
