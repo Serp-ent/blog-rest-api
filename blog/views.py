@@ -15,6 +15,11 @@ class AuthorViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = AuthorSerializer
 
 
+# TODO: create publish action
+# TODO: add filtering by title/author
+# TODO: implement nested router for blog comments
+# TODO: generate OpenAPI/Swagger documentation
+# TODO: implement versioned API (v1/v2)
 class BlogViewset(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
