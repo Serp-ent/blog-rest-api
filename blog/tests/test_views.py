@@ -15,7 +15,7 @@ def test_anonymous_user_cannot_create_blog_posts(anon_client):
     response = anon_client.post(url, blog_payload)
 
     # Assert
-    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert Blog.objects.count() == nblogs_before
 
 @pytest.mark.django_db
@@ -45,7 +45,7 @@ def test_anonymous_user_cannot_create_comment(anon_client, blog):
     response = anon_client.post(url, comment_payload)
 
     # Assert
-    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert Comment.objects.count() == ncomments_before
 
 @pytest.mark.django_db

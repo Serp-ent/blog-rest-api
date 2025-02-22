@@ -1,4 +1,5 @@
 import pytest
+from rest_framework.test import APIRequestFactory
 from django.contrib.auth.models import User
 from blog.models import Blog
 from rest_framework.test import APIClient
@@ -24,7 +25,25 @@ def auth_client(user):
     return client
 
 
+@pytest.fixture()
+@pytest.mark.django_db
+def author(user):
+    return user.author
+
+
 @pytest.fixture
 @pytest.mark.django_db
-def blog(user):
-    return Blog.objects.create(author=user.author, title="title", content="content")
+def blog(author):
+    return Blog.objects.create(author=author, title="title", content="content")
+
+
+@pytest.fixture()
+@pytest.mark.django_db
+def other_author():
+    user = User.objects.create_user(username="otherAuthor")
+    return user.author
+
+
+@pytest.fixture()
+def request_factory():
+    return APIRequestFactory()
