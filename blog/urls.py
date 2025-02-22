@@ -1,4 +1,5 @@
 from rest_framework import routers
+from drf_spectacular import views as docsViews
 from blog.views import (
     AuthorViewset,
     BlogViewset,
@@ -20,6 +21,17 @@ urlpatterns = [
         "register/",
         UserRegistrationView.as_view(),
         name="register",
+    ),
+    path("schema/", docsViews.SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "swagger/",
+        docsViews.SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger",
+    ),
+    path(
+        "redoc/",
+        docsViews.SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
     ),
 ]
 

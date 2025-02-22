@@ -25,7 +25,6 @@ class AuthorViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = AuthorSerializer
 
 
-# TODO: generate OpenAPI/Swagger documentation
 # TODO: implement versioned API (v1/v2)
 class BlogViewset(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
