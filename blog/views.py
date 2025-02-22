@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from blog.permissions import IsBlogOwner
+from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework import generics
 from blog.models import Author, Blog, Comment
 from rest_framework.views import APIView
@@ -15,7 +18,6 @@ class AuthorViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = AuthorSerializer
 
 
-# TODO: create publish action
 # TODO: add filtering by title/author
 # TODO: implement nested router for blog comments
 # TODO: generate OpenAPI/Swagger documentation
@@ -28,6 +30,17 @@ class BlogViewset(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
         return serializer.save(author=user.author)
+
+    @action(detail=True, methods=['POST'], permission_classes=[permissions.IsAuthenticated, IsBlogOwner])
+    def publish(self, request, pk=None):
+        blog: Blog = self.get_object()
+        blog.is_published = True
+        blog.save()
+
+        serializer = self.get_serializer(blog)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
 class CommentViewset(viewsets.ModelViewSet):

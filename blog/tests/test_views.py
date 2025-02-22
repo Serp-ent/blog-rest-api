@@ -2,6 +2,7 @@ import pytest
 from rest_framework import status
 from django.urls import reverse
 from blog.models import Blog, Comment
+from blog.views import BlogViewset
 
 
 @pytest.mark.django_db
@@ -62,3 +63,39 @@ def test_authenticated_user_created_comment(auth_client, blog):
     # Assert
     assert response.status_code == status.HTTP_201_CREATED
     assert Comment.objects.count() == ncomments_before + 1
+
+@pytest.mark.django_db
+def test_publish_blog_as_owner(auth_client, author, blog):
+    url = reverse('blog-publish', kwargs={'pk': blog.id})
+
+    response = auth_client.post(url)
+
+    blog.refresh_from_db()
+    assert response.status_code == status.HTTP_200_OK
+    assert blog.is_published == True, "The blog post was not published"
+
+
+@pytest.mark.django_db
+def test_publish_blog_as_anon(anon_client, blog):
+    url = reverse('blog-publish', kwargs={'pk': blog.id})
+
+    response = anon_client.post(url)
+
+    blog.refresh_from_db()
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert blog.is_published == False, "The blog post was published"
+
+
+@pytest.mark.django_db
+def test_publish_blog_as_non_owner(auth_client, other_author, blog):
+    url = reverse('blog-publish', kwargs={'pk': blog.id})
+    auth_client.force_authenticate(user=other_author.user)
+
+    response = auth_client.post(url)
+
+    blog.refresh_from_db()
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert blog.is_published == False, "The blog post was published"
+
+
+

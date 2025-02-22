@@ -22,6 +22,7 @@ class Blog(models.Model):
     content = models.TextField()
     created_at = models.DateField(auto_now_add=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='blogs')
+    is_published = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.title} ({self.id})"
