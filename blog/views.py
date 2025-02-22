@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -24,13 +25,14 @@ class AuthorViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = AuthorSerializer
 
 
-# TODO: add filtering by title/author
 # TODO: generate OpenAPI/Swagger documentation
 # TODO: implement versioned API (v1/v2)
 class BlogViewset(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["title", "created_at", "author"]
 
     def perform_create(self, serializer):
         user = self.request.user
