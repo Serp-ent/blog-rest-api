@@ -25,7 +25,6 @@ class AuthorViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = AuthorSerializer
 
 
-# TODO: implement versioned API (v1/v2)
 class BlogViewset(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
@@ -82,3 +81,8 @@ class AuthTestView(APIView):
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
+
+
+class Version2View(APIView):
+    def get(self, request: Request) -> Response:
+        return Response('This is response for version 2 api')

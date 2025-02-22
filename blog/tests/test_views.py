@@ -61,7 +61,7 @@ def test_authenticated_user_created_comment(auth_client, blog):
     response = auth_client.post(url, comment_payload)
 
     # Assert
-    assert response.status_code == status.HTTP_201_CREATED
+    assert response.status_code == status.HTTP_201_CREATED, f'blog-url={blog_url}    url={url}  data={response.data}'
     assert Comment.objects.count() == ncomments_before + 1
 
 @pytest.mark.django_db

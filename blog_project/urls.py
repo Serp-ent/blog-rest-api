@@ -31,5 +31,6 @@ urlpatterns = [
         jwtViews.TokenRefreshView.as_view(),
         name="token_refresh",
     ),
-    path("api/", include("blog.urls")),
+    path("api/v1/", include("blog.v1.urls")),
+    path("api/v2/", include("blog.v2.urls")),
 ]
